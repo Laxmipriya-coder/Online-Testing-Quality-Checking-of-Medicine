@@ -1,0 +1,126 @@
+
+/* Theme Colors */
+body.dark {
+  --bg: #0f172a;
+  --text: #f1f5f9;
+  --card: rgba(255, 255, 255, 0.05);
+}
+
+body.light {
+  --bg: #f8fafc;
+  --text: #0f172a;
+  --card: rgba(0, 0, 0, 0.05);
+}
+
+.footer {
+  background: var(--bg);
+  color: var(--text);
+  padding: 40px 20px 10px;
+  backdrop-filter: blur(10px);
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 15px;
+  min-width: 220px;
+}
+
+/* .logo {
+  color: #38bdf8;
+} */
+
+/* Links */
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section a {
+  text-decoration: none;
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.footer-section a:hover {
+  color: #38bdf8;
+}
+
+/* Social Icons */
+.social-icons {
+  margin-top: 10px;
+}
+
+.social-icons a {
+  margin-right: 10px;
+  font-size: 20px;
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.social-icons a:hover {
+  color: #38bdf8;
+}
+
+/* Toggle Button */
+.toggle-btn {
+  padding: 10px 15px;
+  border: none;
+  background: #38bdf8;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.toggle-btn:hover {
+  background: #0ea5e9;
+}
+
+/* Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  border-top: 1px solid #334155;
+  padding-top: 10px;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Logo Section */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.logo-section img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2b6cb0;
+}
