@@ -8,7 +8,7 @@ import HomePage from "./pages/HomePage";
 import Footer from "./components/Footer";
 import ScanPage from "./pages/ScanPage";
 function App() {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     document.body.className = darkMode ? "dark" : "light";
