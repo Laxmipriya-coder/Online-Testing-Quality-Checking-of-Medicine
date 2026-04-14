@@ -3,12 +3,12 @@ import "./footer.css";
 import { FaFacebook, FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 import logo from "../images/logo.png";
 
-const Footer = () => {
-  const [darkMode, setDarkMode] = useState(true);
+const Footer = ({ darkMode, setDarkMode }) => {
+  // const [darkMode, setDarkMode] = useState(true);
 
-  useEffect(() => {
-    document.body.className = darkMode ? "dark" : "light";
-  }, [darkMode]);
+  // useEffect(() => {
+  //   document.body.className = darkMode ? "dark" : "light";
+  // }, [darkMode]);
 
   return (
     <footer className="footer">

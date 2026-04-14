@@ -1,84 +1,110 @@
+/* MAIN */
 .dashboard {
-  padding: 20px;
-  background: linear-gradient(to right, #dbeafe, #bfdbfe);
+  padding: 40px;
+  background: #f5f7fb;
   min-height: 100vh;
-  font-family: Arial;
 }
 
-.title {
-  text-align: center;
-  color: #1e3a8a;
-  margin-bottom: 20px;
+.dashboard-title {
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 600;
 }
 
-.cards {
-  display: flex;
+/* CARDS */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  justify-content: center;
+  margin-bottom: 40px;
 }
 
 .card {
   background: white;
-  padding: 20px;
+  padding: 25px;
   border-radius: 15px;
-  width: 200px;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card h3 {
-  margin-bottom: 10px;
+  font-size: 24px;
+  color: #4c6ef5;
 }
 
 .card p {
-  font-size: 20px;
-  font-weight: bold;
+  margin-top: 8px;
+  color: #666;
+}
+
+/* TABLE */
+.activity-section {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.activity-section h3 {
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 12px;
+  background: #f0f3ff;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* STATUS COLORS */
+.success {
+  color: green;
+  font-weight: 600;
+}
+
+.warning {
+  color: orange;
+  font-weight: 600;
 }
 
 .danger {
   color: red;
+  font-weight: 600;
 }
 
-.safe {
-  color: green;
+/* ================= RESPONSIVE ================= */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.charts {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 40px;
-}
+/* Mobile */
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 20px;
+  }
 
-.chart-box {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  width: 300px;
-  text-align: center;
-}
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
 
-.bar-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  height: 150px;
-  margin-top: 20px;
-}
-
-.bar-chart div {
-  width: 40px;
-  background: #3b82f6;
-  border-radius: 5px;
-}
-
-.pie-chart {
-  width: 150px;
-  height: 150px;
-  margin: 20px auto;
-  border-radius: 50%;
-  background: conic-gradient(
-    #22c55e 0% 40%,
-    #ef4444 40% 70%,
-    #3b82f6 70% 100%
-  );
+  table {
+    font-size: 12px;
+  }
 }

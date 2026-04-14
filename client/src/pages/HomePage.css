@@ -1,62 +1,248 @@
-.hero {
-  position: relative;
-  height: 90vh;
-  background: url("../images/main.png") no-repeat center center/cover;
-  display: flex;
-  align-items: center;
-  padding: 60px;
+/* GLOBAL FIX */
+* {
+  box-sizing: border-box;
 }
 
-/* Dark overlay */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+
+  background: url("../images/main.png") no-repeat center/cover;
+
+  display: flex;
+  align-items: center;
+  padding: 60px 5%;
+  color: white;
+  overflow: hidden;
+}
+
+/* LIGHT OVERLAY */
 .hero::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8) 30%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+  transition: 0.4s;
 }
 
-/* Content */
+/* DARK MODE OVERLAY */
+body.dark .hero::before {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.9) 30%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/* CONTENT BOX */
 .hero-content {
   position: relative;
   z-index: 1;
-  color: white;
-  max-width: 500px;
+  max-width: 550px;
+  width: 100%;
+
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 40px;
+  border-radius: 20px;
+
+  animation: floatBox 4s ease-in-out infinite;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  transition: 0.4s;
 }
 
+/* DARK MODE CONTENT */
+body.dark .hero-content {
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+}
+
+/* HEADING */
 .hero-content h1 {
-  font-size: 40px;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
   margin-bottom: 20px;
+
+  background: linear-gradient(90deg, #4c6ef5, #6a11cb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* TEXT */
 .hero-content p {
-  margin-bottom: 25px;
-  font-size: 16px;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #e0e0e0;
 }
 
-/* Buttons */
+body.dark .hero-content p {
+  color: #ccc;
+}
+
+/* BUTTONS */
 .hero-buttons {
   display: flex;
-  gap: 15px;
+  gap: 20px;
+  margin-bottom: 30px;
 }
 
 .primary-btn {
-  background: #4c6ef5;
+  background: linear-gradient(135deg, #4c6ef5, #6a11cb);
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
+  border-radius: 30px;
   border: none;
-  border-radius: 20px;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
 }
 
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 110, 245, 0.4);
+}
+
+/* Button shine effect */
+.primary-btn::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(255,255,255,0.2);
+  transition: 0.4s;
+}
+
+.primary-btn:hover::after {
+  width: 100%;
+}
+
+/* Secondary */
 .secondary-btn {
   background: transparent;
   border: 2px solid white;
   color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 12px 24px;
+  border-radius: 30px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
+.secondary-btn:hover {
+  background: white;
+  color: #333;
+}
+
+/* STATS */
+.hero-stats {
+  display: flex;
+  gap: 40px;
+}
+
+.hero-stats h3 {
+  font-size: 24px;
+}
+
+.hero-stats p {
+  font-size: 14px;
+  color: #ccc;
+}
+
+/* FLOAT ANIMATION */
+@keyframes floatBox {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* FADE-IN ANIMATION */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 1s ease forwards;
+}
+
+.delay { animation-delay: 0.3s; }
+.delay2 { animation-delay: 0.6s; }
+.delay3 { animation-delay: 0.9s; }
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* TABLET */
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 5%;
+  }
+
+  .hero-content {
+    padding: 30px;
+  }
+
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .hero {
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero-content {
+    padding: 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 26px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

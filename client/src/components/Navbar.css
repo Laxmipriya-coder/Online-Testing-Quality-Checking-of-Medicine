@@ -1,4 +1,4 @@
-/* Navbar Container */
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -11,7 +11,7 @@
   z-index: 1000;
 }
 
-/* Logo Section */
+/* Logo */
 .logo-section {
   display: flex;
   align-items: center;
@@ -21,13 +21,11 @@
 
 .logo-section img {
   width: 40px;
-  height: 40px;
-  object-fit: contain;
 }
 
 .brand {
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 600;
   color: #2b6cb0;
 }
 
@@ -35,27 +33,39 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 25px;
+  gap: 30px;
+  align-items: center;
 }
 
 .nav-links a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
+  position: relative;
+}
+
+/* Hover underline effect */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -4px;
+  background: #4c6ef5;
   transition: 0.3s;
 }
 
-.nav-links a:hover {
-  color: #4c6ef5;
+.nav-links a:hover::after {
+  width: 100%;
 }
 
-/* Right Side */
+/* Right side */
 .nav-right {
   display: flex;
-  align-items: center;
 }
 
-/* Login Button */
+/* Button */
 .login-btn {
   background: linear-gradient(135deg, #4c6ef5, #6a11cb);
   color: white;
@@ -67,5 +77,64 @@
 }
 
 .login-btn:hover {
-  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+/* Hide mobile button on desktop */
+.login-btn.mobile {
+  display: none;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+.navbar {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.nav-links a {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    background: var(--bg);
+  }
+}
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+
+  .hamburger {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    left: -100%;
+    flex-direction: column;
+    width: 100%;
+    background: white;
+    padding: 20px 0;
+    gap: 20px;
+    transition: 0.3s;
+  }
+
+  .nav-links.active {
+    left: 0;
+  }
+
+  .nav-right {
+    display: none;
+  }
+
+  .login-btn.mobile {
+    display: block;
+  }
 }

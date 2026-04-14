@@ -1,46 +1,79 @@
 import React from "react";
-import "./dashboard.css";
+import "./Dashboard.css";
 
-const Dashboard = () => {
+const DashboardPage = () => {
   return (
     <div className="dashboard">
-      <h1 className="title">Admin Dashboard</h1>
 
-      <div className="cards">
+      {/* Heading */}
+      <h2 className="dashboard-title">Dashboard</h2>
+
+      {/* Stats Cards */}
+      <div className="stats-container">
+
         <div className="card">
-          <h3>Total Reports</h3>
-          <p>128</p>
+          <h3>10,245</h3>
+          <p>Total Tests</p>
         </div>
 
         <div className="card">
-          <h3>Unsafe Medicines</h3>
-          <p className="danger">Augmentin-G453</p>
+          <h3>5,320</h3>
+          <p>Users</p>
         </div>
 
         <div className="card">
-          <h3>Safe Medicines</h3>
-          <p className="safe">320</p>
+          <h3>98.7%</h3>
+          <p>Accuracy</p>
         </div>
+
+        <div className="card">
+          <h3>120</h3>
+          <p>Reports Generated</p>
+        </div>
+
       </div>
 
-      <div className="charts">
-        <div className="chart-box">
-          <h3>Reports Overview</h3>
-          <div className="bar-chart">
-            <div style={{ height: "40%" }}></div>
-            <div style={{ height: "60%" }}></div>
-            <div style={{ height: "80%" }}></div>
-            <div style={{ height: "50%" }}></div>
-          </div>
-        </div>
+      {/* Recent Activity */}
+      <div className="activity-section">
+        <h3>Recent Activity</h3>
 
-        <div className="chart-box">
-          <h3>Statistics</h3>
-          <div className="pie-chart"></div>
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Test ID</th>
+              <th>Medicine</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>#1023</td>
+              <td>Paracetamol</td>
+              <td className="success">Safe</td>
+              <td>14 Apr 2026</td>
+            </tr>
+
+            <tr>
+              <td>#1022</td>
+              <td>Ibuprofen</td>
+              <td className="warning">Check</td>
+              <td>13 Apr 2026</td>
+            </tr>
+
+            <tr>
+              <td>#1021</td>
+              <td>Amoxicillin</td>
+              <td className="danger">Unsafe</td>
+              <td>12 Apr 2026</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
     </div>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
