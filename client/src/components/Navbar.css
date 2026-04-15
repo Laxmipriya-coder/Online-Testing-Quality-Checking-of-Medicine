@@ -1,17 +1,32 @@
-/* Navbar */
+
+/* ================= NAVBAR ================= */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px 40px;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  justify-content: space-between;
+  padding: 12px 30px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
+  gap: 20px;
+  flex-wrap: nowrap;
+  transition: 0.3s;
 }
 
-/* Logo */
+/* ================= LIGHT THEME ================= */
+body.light .navbar {
+  background: #ffffff;
+  color: #111;
+}
+
+/* ================= DARK THEME ================= */
+body.dark .navbar {
+  background: #1e1e1e;
+  color: #ffffff;
+}
+
+/* ================= LOGO ================= */
 .logo-section {
   display: flex;
   align-items: center;
@@ -25,26 +40,34 @@
 
 .brand {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
   color: #2b6cb0;
 }
 
-/* Links */
+/* ================= NAV LINKS ================= */
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 30px;
+  gap: 25px;
   align-items: center;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #333;
   font-weight: 500;
-  position: relative;
+  transition: 0.3s;
 }
 
-/* Hover underline effect */
+/* LINKS THEME */
+body.light .nav-links a {
+  color: #333;
+}
+
+body.dark .nav-links a {
+  color: #fff;
+}
+
+/* hover underline */
 .nav-links a::after {
   content: "";
   position: absolute;
@@ -60,58 +83,80 @@
   width: 100%;
 }
 
-/* Right side */
-.nav-right {
+/* ================= SEARCH BOX ================= */
+.search-box {
   display: flex;
+  align-items: center;
+  border-radius: 30px;
+  padding: 5px 10px;
+  width: 320px;
+  max-width: 350px;
+  transition: 0.3s;
 }
 
-/* Button */
-.login-btn {
-  background: linear-gradient(135deg, #4c6ef5, #6a11cb);
-  color: white;
-  padding: 8px 18px;
-  border-radius: 20px;
+/* search theme */
+body.light .search-box {
+  background: #f1f3f6;
+}
+
+body.dark .search-box {
+  background: #2a2a2a;
+}
+
+.search-box input {
   border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* input color */
+body.dark .search-box input {
+  color: #fff;
+}
+
+.search-box button {
+  border: none;
+  background: #2874f0;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
   cursor: pointer;
   transition: 0.3s;
 }
 
-.login-btn:hover {
+.search-box button:hover {
+  background: #1f5fd0;
   transform: scale(1.05);
 }
 
-/* Hide mobile button on desktop */
-.login-btn.mobile {
-  display: none;
+/* ================= LOGIN ================= */
+.login-btn {
+  background: linear-gradient(135deg, #4c6ef5, #6a11cb);
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
 }
 
-/* Hamburger */
+/* ================= HAMBURGER ================= */
 .hamburger {
   display: none;
   font-size: 24px;
   cursor: pointer;
 }
 
-
-.navbar {
-  background: var(--bg);
-  color: var(--text);
-}
-
-.nav-links a {
-  color: var(--text);
-}
-
-@media (max-width: 768px) {
-  .nav-links {
-    background: var(--bg);
-  }
-}
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
 
-  .hamburger {
-    display: block;
+  .navbar {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 15px;
   }
 
   .nav-links {
@@ -120,21 +165,35 @@
     left: -100%;
     flex-direction: column;
     width: 100%;
-    background: white;
-    padding: 20px 0;
-    gap: 20px;
+    padding: 20px;
     transition: 0.3s;
+    gap: 20px;
+  }
+
+  body.light .nav-links {
+    background: #ffffff;
+  }
+
+  body.dark .nav-links {
+    background: #1e1e1e;
   }
 
   .nav-links.active {
     left: 0;
   }
 
-  .nav-right {
-    display: none;
+  .hamburger {
+    display: block;
   }
 
-  .login-btn.mobile {
-    display: block;
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+    order: 10;
+    margin-top: 10px;
+  }
+
+  .search-box input {
+    width: 100%;
   }
 }

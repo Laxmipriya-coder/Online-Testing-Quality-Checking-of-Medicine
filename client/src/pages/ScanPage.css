@@ -1,0 +1,72 @@
+/* 🌐 Container */
+.home-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+/* 🔍 Search Bar */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.scan-btn {
+  background: #2b6cb0;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.scan-btn:hover {
+  background: #1e4e8c;
+}
+
+/* ⚠️ Alert Box */
+.alert-box {
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+/* Alert Title */
+.alert-box h3 {
+  color: #c53030;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Alert Items */
+.alert-item {
+  background: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border-left: 4px solid #e53e3e;
+  font-size: 14px;
+}
+
+/* 📱 Responsive */
+@media (max-width: 480px) {
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .scan-btn {
+    width: 100%;
+  }
+}

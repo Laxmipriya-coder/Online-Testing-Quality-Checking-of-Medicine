@@ -1,52 +1,80 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
 import "./navbar.css";
 import logo from "../images/logo.png";
 
-const Navbar = ({darkMode, setDarkMode}) => {
-  
+const Navbar = ({ darkMode, setDarkMode }) => {
+  useEffect(() => {
+  document.body.classList.remove("dark", "light");
+  document.body.classList.add(darkMode ? "dark" : "light");
+}, [darkMode]);
+
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
+  // ✅ LOGIN FUNCTION (FIXED)
   const handleLogin = () => {
     navigate("/login");
+  };
+
+  // SEARCH
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    console.log("Searching:", search);
   };
 
   return (
     <nav className="navbar">
 
-      {/* Logo */}
+      {/* LOGO */}
       <div className="logo-section" onClick={() => navigate("/")}>
         <img src={logo} alt="logo" />
         <span className="brand">MediVerify</span>
       </div>
 
-      {/* Hamburger */}
+      {/* LINKS */}
+      <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
+        <li><Link to="/">Home</Link></li>
+        <li><Link to="/scan">Scan</Link></li>
+        <li><Link to="/report">Report</Link></li>
+        <li><Link to="/dashboard">Dashboard</Link></li>
+      </ul>
+
+      {/* SEARCH BOX */}
+      <div className="search-box">
+        <input
+          type="text"
+          placeholder="Search medicines, brands..."
+          value={search}
+          onChange={handleSearch}
+        />
+
+        <button onClick={handleSearchSubmit}>
+          <FiSearch />
+        </button>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="nav-right">
+
+        {/* LOGIN BUTTON (FIXED) */}
+        <button className="login-btn" onClick={handleLogin}>
+          Login
+        </button>
+
+      </div>
+
+      {/* MOBILE MENU */}
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
         ☰
       </div>
 
-      {/* Links */}
-      <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
-        <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
-        <li><Link to="/scan" onClick={() => setMenuOpen(false)}>Scan</Link></li>
-        <li><Link to="/report" onClick={() => setMenuOpen(false)}>Report</Link></li>
-        <li><Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
-
-       
-        {/* Mobile login button */}
-        <button className="login-btn mobile" onClick={handleLogin}>
-          Login
-        </button>
-      </ul>
-
-      {/* Desktop Right Side */}
-      <div className="nav-right">
-        <button className="login-btn" onClick={handleLogin}>
-          Login
-        </button>
-      </div>
-      
     </nav>
   );
 };
