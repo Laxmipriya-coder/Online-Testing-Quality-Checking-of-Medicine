@@ -21,12 +21,18 @@ const Navbar = ({ darkMode, setDarkMode }) => {
   };
 
   // SEARCH
+  const handleKeyPress = (e) => {
+  if (e.key === "Enter") {
+    handleSearchSubmit();
+  }
+};
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
-
   const handleSearchSubmit = () => {
-    console.log("Searching:", search);
+    if(search.trim()){
+      navigate(`/search?query=${search}`);
+    }
   };
 
   return (
@@ -50,9 +56,10 @@ const Navbar = ({ darkMode, setDarkMode }) => {
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search medicines, brands..."
+          placeholder="Search medicines, Consumables..."
           value={search}
           onChange={handleSearch}
+          onKeyDown={handleKeyPress}
         />
 
         <button onClick={handleSearchSubmit}>
