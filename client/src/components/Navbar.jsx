@@ -1,38 +1,30 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
-import "./navbar.css";
+import "./Navbar.css";
 import logo from "../images/logo.png";
 
 const Navbar = ({ darkMode, setDarkMode }) => {
-  useEffect(() => {
-  document.body.classList.remove("dark", "light");
-  document.body.classList.add(darkMode ? "dark" : "light");
-}, [darkMode]);
-
   const navigate = useNavigate();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState(null);
 
-  // ✅ LOGIN FUNCTION (FIXED)
-  const handleLogin = () => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userRole = localStorage.getItem("role");
+
+    setIsLoggedIn(!!token);
+    setRole(userRole);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    setIsLoggedIn(false);
     navigate("/login");
-  };
-
-  // SEARCH
-  const handleKeyPress = (e) => {
-  if (e.key === "Enter") {
-    handleSearchSubmit();
-  }
-};
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
-  const handleSearchSubmit = () => {
-    if(search.trim()){
-      navigate(`/search?query=${search}`);
-    }
   };
 
   return (
@@ -50,34 +42,47 @@ const Navbar = ({ darkMode, setDarkMode }) => {
         <li><Link to="/scan">Scan</Link></li>
         <li><Link to="/report">Report</Link></li>
         <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><Link to="/medicine">Medicine</Link></li>
+
+        {/* 🔥 ADMIN ONLY */}
+        {role === "admin" && (
+          <li><Link to="/admin">Admin</Link></li>
+        )}
       </ul>
 
-      {/* SEARCH BOX */}
+      {/* SEARCH */}
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search medicines, Consumables..."
+          placeholder="Search medicines..."
           value={search}
-          onChange={handleSearch}
-          onKeyDown={handleKeyPress}
+          onChange={(e) => setSearch(e.target.value)}
         />
-
-        <button onClick={handleSearchSubmit}>
-          <FiSearch />
-        </button>
+        <button><FiSearch /></button>
       </div>
 
       {/* RIGHT SIDE */}
       <div className="nav-right">
 
-        {/* LOGIN BUTTON (FIXED) */}
-        <button className="login-btn" onClick={handleLogin}>
-          Login
-        </button>
+  {isLoggedIn ? (
+    <button className="logout-btn" onClick={handleLogout}>
+      Logout
+    </button>
+  ) : (
+    <div className="auth-buttons">
+      <button className="login-btn" onClick={() => navigate("/login")}>
+        Login
+      </button>
 
-      </div>
+      <button className="signup-btn" onClick={() => navigate("/signup")}>
+        Sign Up
+      </button>
+    </div>
+  )}
 
-      {/* MOBILE MENU */}
+</div>
+
+      {/* MOBILE */}
       <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
         ☰
       </div>

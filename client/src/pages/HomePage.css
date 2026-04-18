@@ -9,20 +9,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ================= THEME VARIABLES ================= */
-
-body.light {
-  --text: #000;
-  --card-bg: rgba(255, 255, 255, 0.2);
-}
-
-body.dark {
-  --text: #fff;
-  --card-bg: rgba(0, 0, 0, 0.4);
-}
-
-/* ================= HERO SECTION ================= */
-
+/* HERO SECTION */
 .hero {
   position: relative;
   width: 100%;
@@ -33,28 +20,26 @@ body.dark {
   display: flex;
   align-items: center;
   padding: 60px 5%;
-  color: var(--text);
+  color: white;
   overflow: hidden;
 }
 
-/* LIGHT MODE OVERLAY */
-body.light .hero::before {
+/* LIGHT OVERLAY */
+.hero::before {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.7) 30%,
-    rgba(255, 255, 255, 0.4) 60%,
-    rgba(255, 255, 255, 0.2) 100%
+    rgba(0, 0, 0, 0.8) 30%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.2) 100%
   );
+  transition: 0.4s;
 }
 
 /* DARK MODE OVERLAY */
 body.dark .hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
   background: linear-gradient(
     90deg,
     rgba(0, 0, 0, 0.9) 30%,
@@ -63,8 +48,7 @@ body.dark .hero::before {
   );
 }
 
-/* ================= CONTENT ================= */
-
+/* CONTENT BOX */
 .hero-content {
   position: relative;
   z-index: 1;
@@ -72,13 +56,19 @@ body.dark .hero::before {
   width: 100%;
 
   backdrop-filter: blur(10px);
-  background: var(--card-bg);
+  background: rgba(255, 255, 255, 0.05);
   padding: 40px;
   border-radius: 20px;
 
   animation: floatBox 4s ease-in-out infinite;
   box-shadow: 0 10px 40px rgba(0,0,0,0.3);
   transition: 0.4s;
+}
+
+/* DARK MODE CONTENT */
+body.dark .hero-content {
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
 }
 
 /* HEADING */
@@ -98,10 +88,14 @@ body.dark .hero::before {
   font-size: 18px;
   line-height: 1.6;
   margin-bottom: 30px;
+  color: #e0e0e0;
 }
 
-/* ================= BUTTONS ================= */
+body.dark .hero-content p {
+  color: #ccc;
+}
 
+/* BUTTONS */
 .hero-buttons {
   display: flex;
   gap: 20px;
@@ -115,6 +109,8 @@ body.dark .hero::before {
   border-radius: 30px;
   border: none;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
   transition: 0.3s;
 }
 
@@ -123,11 +119,27 @@ body.dark .hero::before {
   box-shadow: 0 6px 20px rgba(76, 110, 245, 0.4);
 }
 
-/* Secondary Button */
+/* Button shine effect */
+.primary-btn::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(255,255,255,0.2);
+  transition: 0.4s;
+}
+
+.primary-btn:hover::after {
+  width: 100%;
+}
+
+/* Secondary */
 .secondary-btn {
   background: transparent;
-  border: 2px solid var(--text);
-  color: var(--text);
+  border: 2px solid white;
+  color: white;
   padding: 12px 24px;
   border-radius: 30px;
   cursor: pointer;
@@ -135,12 +147,11 @@ body.dark .hero::before {
 }
 
 .secondary-btn:hover {
-  background: var(--text);
-  color: #000;
+  background: white;
+  color: #333;
 }
 
-/* ================= STATS ================= */
-
+/* STATS */
 .hero-stats {
   display: flex;
   gap: 40px;
@@ -152,17 +163,17 @@ body.dark .hero::before {
 
 .hero-stats p {
   font-size: 14px;
-  opacity: 0.8;
+  color: #ccc;
 }
 
-/* ================= ANIMATIONS ================= */
-
+/* FLOAT ANIMATION */
 @keyframes floatBox {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0px); }
 }
 
+/* FADE-IN ANIMATION */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);

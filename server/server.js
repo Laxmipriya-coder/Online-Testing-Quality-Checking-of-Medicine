@@ -1,61 +1,45 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./db");
+require("dotenv").config();
 
 const app = express();
 
+
+// 🔵 Middlewares
 app.use(cors());
 app.use(express.json());
 
-/* ---------------- ROOT ---------------- */
+
+// 🔵 Test Route
 app.get("/", (req, res) => {
-  res.send("API Running");
+  res.send("Backend running 🚀");
 });
 
-/* ---------------- ADD SUPPLIER ---------------- */
-app.post("/addSupplier", (req, res) => {
-  const { supplier_name, contact, email, address } = req.body;
 
-  const sql =
-    "INSERT INTO supplier (supplier_name, contact, email, address) VALUES (?, ?, ?, ?)";
+// 🔵 Routes
+app.use("/api/auth", require("./src/routes/authRoutes"));
+app.use("/api/medicine", require("./src/routes/medicineRoutes"));
+app.use("/api/report", require("./src/routes/reportRoutes"));
+app.use("/api/scan", require("./src/routes/scanRoutes"));
+app.use("/api/dashboard", require("./src/routes/dashboardRoutes"));
 
-  db.query(sql, [supplier_name, contact, email, address], (err, result) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send("Error inserting data");
-    } else {
-      res.send("Supplier Added Successfully");
-    }
-  });
+
+// 🔵 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found ❌" });
 });
 
-/* ---------------- PRODUCT SCAN API (NEW 🔥) ---------------- */
-app.get("/product/:barcode", (req, res) => {
-  const barcode = req.params.barcode;
 
-  const sql = "SELECT * FROM products WHERE barcode = ?";
-
-  db.query(sql, [barcode], (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ success: false });
-    }
-
-    if (result.length > 0) {
-      res.json({
-        success: true,
-        data: result[0]
-      });
-    } else {
-      res.json({
-        success: false,
-        message: "Product not found"
-      });
-    }
-  });
+// 🔵 Global Error Handler (recommended)
+app.use((err, req, res, next) => {
+  console.error("Server Error:", err);
+  res.status(500).json({ message: "Internal Server Error ❌" });
 });
 
-/* ---------------- SERVER START ---------------- */
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+
+// 🔵 Start Server
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running 🚀 on port ${PORT}`);
 });

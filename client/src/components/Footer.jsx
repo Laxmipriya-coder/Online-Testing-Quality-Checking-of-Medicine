@@ -45,7 +45,7 @@ const Footer = ({ darkMode, setDarkMode }) => {
         <div className="footer-section">
           <h3>Contact</h3>
           <p>Email: support@mediverify.com</p>
-          <p>Phone: +91 98765 43210</p>
+          <p>Phone: +91 9871891523</p>
           <p>
             <a 
               href="https://www.google.com/maps?q=India" 

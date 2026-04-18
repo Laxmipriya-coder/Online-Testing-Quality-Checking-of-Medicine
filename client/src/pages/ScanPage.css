@@ -1,42 +1,108 @@
+/* 🌐 Background */
 .scan-container {
-  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef2f3, #d9e4f5);
   padding: 20px;
 }
 
-.camera-box {
+/* 🧾 Card */
+.scan-card {
   width: 100%;
-  max-width: 420px;
-  border-radius: 12px;
+  max-width: 430px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+/* Title */
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 18px;
+}
+
+/* Input */
+.input-box {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input-box:focus {
+  border-color: #2b6cb0;
+  box-shadow: 0 0 6px rgba(43,108,176,0.25);
+}
+
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 12px;
   margin-top: 10px;
-  border: 2px solid #ddd;
-}
-
-.btn-group {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-button {
-  padding: 8px 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  font-size: 14px;
   cursor: pointer;
-  background: #007bff;
+  transition: 0.2s;
+  font-weight: 500;
+}
+
+.primary {
+  background: #2b6cb0;
   color: white;
 }
 
-.result-card {
-  margin-top: 20px;
-  padding: 15px;
-  background: #f4f6f8;
-  border-radius: 10px;
-  display: inline-block;
-  text-align: left;
+.primary:hover {
+  background: #1e4e8c;
 }
 
-.error {
-  color: red;
-  margin-top: 10px;
+.success {
+  background: #16a34a;
+  color: white;
+}
+
+.success:hover {
+  background: #12833c;
+}
+
+.danger {
+  background: #dc2626;
+  color: white;
+}
+
+.danger:hover {
+  background: #b91c1c;
+}
+
+/* 📹 Camera Box */
+.camera-box {
+  margin-top: 16px;
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #eee;
+  background: #000;
+}
+
+.camera-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

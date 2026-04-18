@@ -1,159 +1,155 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BrowserMultiFormatReader } from "@zxing/browser";
+import authFetch from "../utils/authFetch";
+import { useNavigate } from "react-router-dom";
 import "./ScanPage.css";
 
-// DEMO DATABASE (replace with backend later)
-const productDatabase = {
-  "123456": {
-    name: "Paracetamol",
-    type: "Medicine",
-    expiry: "2026-12-10",
-    composition: "Acetaminophen 500mg",
-    description: "Used for fever and pain relief"
-  },
-  "987654": {
-    name: "Face Mask",
-    type: "Consumable",
-    expiry: "2027-06-01",
-    composition: "Non-woven fabric",
-    description: "Protects from dust and virus"
-  }
-};
+const ScanPage = () => {
+  const [batch, setBatch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [scanning, setScanning] = useState(false);
 
-export default function ScanPage() {
   const videoRef = useRef(null);
   const codeReaderRef = useRef(null);
 
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
-  const [scanning, setScanning] = useState(false);
-  const [torchOn, setTorchOn] = useState(false);
+  const navigate = useNavigate();
 
-  // 🔊 beep sound
-  const playBeep = () => {
-    const audio = new Audio(
-      "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-    );
-    audio.play();
+  // 🧠 API CALL
+  const handleScan = async (manualBatch) => {
+    const value = manualBatch || batch;
+
+    if (!value.trim()) {
+      alert("Enter or scan barcode");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await authFetch(`/scan/${value}`);
+
+      navigate("/result", { state: res });
+    } catch (err) {
+      console.error("Scan Error:", err);
+      alert("Scan failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // 📷 START SCANNER
-  const startScan = async () => {
+  const startScanner = async () => {
     try {
+      setScanning(true);
+
       const codeReader = new BrowserMultiFormatReader();
       codeReaderRef.current = codeReader;
 
-      const devices = await BrowserMultiFormatReader.listVideoInputDevices();
-      const deviceId = devices[0]?.deviceId;
+      const devices =
+        await BrowserMultiFormatReader.listVideoInputDevices();
 
-      if (!deviceId) {
-        setError("No camera found");
-        return;
-      }
+      const deviceId = devices?.[0]?.deviceId;
 
-      setScanning(true);
+      if (!videoRef.current) return;
 
-      codeReader.decodeFromVideoDevice(
+      await codeReader.decodeFromVideoDevice(
         deviceId,
         videoRef.current,
         (result, err) => {
           if (result) {
-            const code = result.getText();
-            console.log("Scanned:", code);
+            const text = result.getText();
+            setBatch(text);
+            stopScanner();
+            handleScan(text);
+          }
 
-            if (productDatabase[code]) {
-              playBeep();
-              setResult(productDatabase[code]);
-              stopScan();
-            } else {
-              setError("Product not found in database");
-            }
+          if (err && err.name !== "NotFoundException") {
+            console.log(err);
           }
         }
       );
     } catch (err) {
-      setError("Camera access failed");
+      console.error("Camera Error:", err);
+      setScanning(false);
     }
   };
 
-  // 🛑 STOP SCANNER
-  const stopScan = () => {
-    if (codeReaderRef.current) {
-      codeReaderRef.current.reset();
-    }
+  // ❌ STOP SCANNER
+  const stopScanner = () => {
     setScanning(false);
-  };
 
-  // 🔦 Torch (works on supported devices only)
-  const toggleTorch = async () => {
-    try {
-      const track = videoRef.current?.srcObject?.getVideoTracks?.()[0];
+    if (codeReaderRef.current) {
+      try {
+        codeReaderRef.current.reset?.();
+      } catch (e) {}
+      codeReaderRef.current = null;
+    }
 
-      if (track && track.getCapabilities().torch) {
-        await track.applyConstraints({
-          advanced: [{ torch: !torchOn }]
-        });
-        setTorchOn(!torchOn);
-      } else {
-        alert("Torch not supported on this device");
-      }
-    } catch (err) {
-      console.log(err);
+    const video = videoRef.current;
+
+    if (video && video.srcObject) {
+      const stream = video.srcObject;
+      const tracks = stream.getTracks();
+      tracks.forEach((track) => track.stop());
+      video.srcObject = null;
     }
   };
 
+  // 🧹 cleanup
   useEffect(() => {
-    return () => stopScan();
+    return () => {
+      if (codeReaderRef.current) {
+        codeReaderRef.current.reset?.();
+      }
+    };
   }, []);
 
   return (
     <div className="scan-container">
+      <div className="scan-card">
 
-      <h2>📷 PRO Medicine Scanner</h2>
+        <h2 className="title">📷 Medicine Scanner</h2>
+        <p className="subtitle">
+          Scan barcode or enter manually to get medicine details
+        </p>
 
-      {/* CAMERA */}
-      <video ref={videoRef} className="camera-box" />
+        {/* INPUT */}
+        <input
+          className="input-box"
+          type="text"
+          value={batch}
+          onChange={(e) => setBatch(e.target.value)}
+          placeholder="Enter or scan barcode"
+        />
 
-      {/* BUTTONS */}
-      <div className="btn-group">
-
-        {!scanning ? (
-          <button onClick={startScan}>▶ Start Scan</button>
-        ) : (
-          <button onClick={stopScan}>⛔ Stop Scan</button>
-        )}
-
-        <button onClick={toggleTorch}>
-          🔦 {torchOn ? "Torch Off" : "Torch On"}
+        {/* SEARCH BUTTON */}
+        <button
+          className="btn primary"
+          onClick={() => handleScan()}
+          disabled={loading}
+        >
+          {loading ? "Searching..." : "Search Medicine"}
         </button>
 
-      </div>
-
-      {/* ERROR */}
-      {error && <p className="error">{error}</p>}
-
-      {/* RESULT */}
-      {result && (
-        <div className="result-card">
-
-          <h3>{result.name}</h3>
-
-          <p><b>Type:</b> {result.type}</p>
-          <p><b>Expiry:</b> {result.expiry}</p>
-          <p><b>Composition:</b> {result.composition}</p>
-          <p><b>Description:</b> {result.description}</p>
-
-          <button onClick={() => {
-            setResult(null);
-            setError("");
-            startScan();
-          }}>
-            🔄 Scan Again
+        {/* CAMERA BUTTONS */}
+        {!scanning ? (
+          <button className="btn success" onClick={startScanner}>
+            📷 Start Camera Scanner
           </button>
+        ) : (
+          <button className="btn danger" onClick={stopScanner}>
+            ❌ Stop Scanner
+          </button>
+        )}
 
+        {/* CAMERA VIEW */}
+        <div className="camera-box">
+          <video ref={videoRef} />
         </div>
-      )}
 
+      </div>
     </div>
   );
-}
+};
+
+export default ScanPage;

@@ -1,78 +1,132 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./LoginPage.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!email || !password) {
-    alert("Please fill all fields");
-    return;
-  }
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
 
-  // Get user from localStorage
-  const storedUser = JSON.parse(localStorage.getItem("user"));
+      const data = await res.json();
 
-  // Check user exists
-  if (!storedUser) {
-    alert("No user found. Please signup first!");
-    return;
-  }
+      if (!res.ok) {
+        alert(data.message);
+        return;
+      }
 
-  // Check email & password match
-  if (email === storedUser.email && password === storedUser.password) {
-    alert("Login Successful ✅");
-    navigate("/dashboard");
-  } else {
-    alert("Invalid Email or Password ❌");
-  }
-};
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
 
+      if (data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/scan");
+      }
+
+    } catch (err) {
+      console.log(err);
+      alert("Server error ❌");
+    }
+  };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2>Welcome Back 👋</h2>
-        <p>Login to your account</p>
-        <form onSubmit={handleSubmit} autoComplete="off">
-  <input
-    type="email"
-    placeholder="Enter your Email"
-    value={email}
-    autoComplete="off"
-    name="email"
-    onChange={(e) => setEmail(e.target.value)}
-  />
+    <div style={styles.container}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Login</h2>
 
-  <input
-    type="password"
-    placeholder="Enter your Password"
-    value={password}
-    autoComplete="new-password"
-    name="password"
-    onChange={(e) => setPassword(e.target.value)}
-  />
+        <form onSubmit={handleSubmit} style={styles.form}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
+          />
 
-  <button type="submit">Login</button>
- 
-<p>
-  Don't have an account?{" "}
-  <span 
-    onClick={() => navigate("/signup")} 
-    style={{ color: "blue", cursor: "pointer" }}
-  >
-    Sign up
-  </span>
-</p>
-</form>
+          <input
+            type="password"
+            placeholder="Password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+          />
+
+          <button type="submit" style={styles.button}>
+            Login
+          </button>
+        </form>
+
+        <p style={styles.text}>
+          Don’t have an account?{" "}
+          <span
+            style={styles.link}
+            onClick={() => navigate("/register")}
+          >
+            Sign Up
+          </span>
+        </p>
       </div>
     </div>
   );
 };
 
-export default LoginPage; 
+const styles = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "#f4f6f8"
+  },
+  card: {
+    width: "350px",
+    padding: "30px",
+    borderRadius: "10px",
+    background: "#fff",
+    boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
+    textAlign: "center"
+  },
+  title: {
+    marginBottom: "20px"
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px"
+  },
+  input: {
+    padding: "10px",
+    borderRadius: "5px",
+    border: "1px solid #ccc"
+  },
+  button: {
+    padding: "10px",
+    background: "skyblue",
+    color: "#fff",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer"
+  },
+  text: {
+    marginTop: "15px",
+    fontSize: "14px"
+  },
+  link: {
+    color: "blue",
+    cursor: "pointer",
+    fontWeight: "bold"
+  }
+};
+
+export default LoginPage;

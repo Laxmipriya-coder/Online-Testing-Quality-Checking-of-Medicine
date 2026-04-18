@@ -1,79 +1,125 @@
-import React from "react";
-import "./DashboardPage.css";
+import React, { useEffect, useState } from "react";
+import authFetch from "../utils/authFetch";
+import { Bar } from "react-chartjs-2";
+
+// ✅ Chart.js register (VERY IMPORTANT)
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const DashboardPage = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const res = await authFetch("/dashboard"); // ✅ correct URL
+        console.log("Dashboard:", res);
+        setData(res); // ✅ full data (stats + activities)
+      } catch (err) {
+        console.error("Dashboard Error:", err);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
+  // ✅ loading check
+  if (!data || !data.stats) {
+    return <h2 style={{ textAlign: "center" }}>Loading...</h2>;
+  }
+
+  // ✅ Chart Data
+  const chartData = {
+    labels: ["Tests", "Users", "Reports"],
+    datasets: [
+      {
+        label: "Dashboard Stats",
+        data: [
+          data.stats.totalTests,
+          data.stats.users,
+          data.stats.reports
+        ],
+      },
+    ],
+  };
+
   return (
-    <div className="dashboard">
+    <div style={{ padding: "20px" }}>
+      <h2 style={{ marginBottom: "20px" }}>Dashboard</h2>
 
-      {/* Heading */}
-      <h2 className="dashboard-title">Dashboard</h2>
-
-      {/* Stats Cards */}
-      <div className="stats-container">
-
-        <div className="card">
-          <h3>10,245</h3>
+      {/* 🔥 CARDS */}
+      <div
+        style={{
+          display: "flex",
+          gap: "20px",
+          flexWrap: "wrap"
+        }}
+      >
+        <div style={cardStyle}>
+          <h3>{data.stats.totalTests ?? 0}</h3>
           <p>Total Tests</p>
         </div>
 
-        <div className="card">
-          <h3>5,320</h3>
+        <div style={cardStyle}>
+          <h3>{data.stats.users ?? 0}</h3>
           <p>Users</p>
         </div>
 
-        <div className="card">
-          <h3>98.7%</h3>
-          <p>Accuracy</p>
+        <div style={cardStyle}>
+          <h3>{data.stats.reports ?? 0}</h3>
+          <p>Reports</p>
         </div>
-
-        <div className="card">
-          <h3>120</h3>
-          <p>Reports Generated</p>
-        </div>
-
       </div>
 
-      {/* Recent Activity */}
-      <div className="activity-section">
-        <h3>Recent Activity</h3>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Test ID</th>
-              <th>Medicine</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>#1023</td>
-              <td>Paracetamol</td>
-              <td className="success">Safe</td>
-              <td>14 Apr 2026</td>
-            </tr>
-
-            <tr>
-              <td>#1022</td>
-              <td>Ibuprofen</td>
-              <td className="warning">Check</td>
-              <td>13 Apr 2026</td>
-            </tr>
-
-            <tr>
-              <td>#1021</td>
-              <td>Amoxicillin</td>
-              <td className="danger">Unsafe</td>
-              <td>12 Apr 2026</td>
-            </tr>
-          </tbody>
-        </table>
+      {/* 📊 CHART */}
+      <div style={{ marginTop: "40px" }}>
+        <Bar key={JSON.stringify(chartData)} data={chartData} />
       </div>
 
+      {/* 📋 ACTIVITY */}
+      <h3 style={{ marginTop: "30px" }}>Recent Activity</h3>
+
+      <ul>
+        {data.activities?.length > 0 ? (
+          data.activities.map((item, index) => (
+            <li key={index}>
+              {item.medicine_name || "Medicine"} - {item.result || "Result"}
+            </li>
+          ))
+        ) : (
+          <p>No recent activity</p>
+        )}
+      </ul>
     </div>
   );
+};
+
+// 🎨 Card Style
+const cardStyle = {
+  flex: "1",
+  minWidth: "200px",
+  padding: "20px",
+  borderRadius: "12px",
+  background: "#1e293b",
+  color: "white",
+  boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+  textAlign: "center"
 };
 
 export default DashboardPage;

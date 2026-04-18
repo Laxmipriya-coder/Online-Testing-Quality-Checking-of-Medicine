@@ -1,17 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";   // ✅ IMPORTANT
 import "./HomePage.css";
-import MedicineSection from "../components/MedicineSection";
 import PopularMedicine from "../components/PopularMedicine";
-import Consumables from "./Consumables";
+import Consumables from "../pages/Consumables";
+import MedicineSection from "../components/MedicineSection";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const navigate = useNavigate();   // ✅ IMPORTANT
+  const navigate = useNavigate(); // ✅ navigation hook
 
   return (
     <>
       {/* HERO SECTION */}
       <section className="hero">
+
         <div className="hero-content">
 
           <h1 className="fade-in">
@@ -19,19 +20,24 @@ const HomePage = () => {
           </h1>
 
           <p className="fade-in delay">
-            Monitor, analyze and ensure the safety and authenticity 
+            Monitor, analyze and ensure the safety and authenticity
             of medicines and healthcare consumables.
           </p>
 
           <div className="hero-buttons fade-in delay2">
-            <button 
-              className="primary-btn" 
+            {/* 🔥 Start Testing → Scan Page */}
+            <button
+              className="primary-btn"
               onClick={() => navigate("/scan")}
             >
               Start Testing
             </button>
 
-            <button className="secondary-btn" onClick={()=> navigate("/report")}>
+            {/* 📊 View Reports */}
+            <button
+              className="secondary-btn"
+              onClick={() => navigate("/report")}
+            >
               View Reports
             </button>
           </div>
@@ -53,11 +59,13 @@ const HomePage = () => {
           </div>
 
         </div>
+
       </section>
 
+      {/* Medicine Section */}
       <MedicineSection />
       <PopularMedicine />
-      <Consumables />
+      <Consumables/>
     </>
   );
 };
